@@ -1,0 +1,21 @@
+[
+  {
+    "id": "DG-1201",
+    "serialNumber": "DG-2026-1201",
+    "title": "Tesseract Obelisk",
+    "category": "Sculpture",
+    "year": 2026,
+    "glassType": "Synthetic Fused Quartz",
+    "refractiveIndex": 1.458,
+    "annealTemp": "1150C / 36h soak",
+    "dimensions": "55cm x 22cm x 22cm",
+    "weight": "11.4 kg",
+    "status": "Available",
+    "curatorNotes": "Atelier bespoke piece forged in Kiln Chamber #1. Tested for zero molecular shear and certified with Decennia watermark seal.",
+    "img": "https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=800",
+    "provenance": "Decennia Atelier Master Commission, Studio 41-B",
+    "price": "$15,000 USD",
+    "createdAt": "2026-10-16T09:15:07.736Z",
+    "custom": true
+  }
+]

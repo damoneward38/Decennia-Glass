@@ -1,0 +1,8 @@
+{
+  "name": "Decennia Glass",
+  "description": "A decade of clarity, crafted in glass. Exquisite laboratory-grade glass art and precision glassware.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
