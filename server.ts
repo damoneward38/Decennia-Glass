@@ -5,6 +5,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
+import { timingSafeEqual } from 'crypto';
 
 dotenv.config();
 
@@ -15,6 +16,18 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: '10mb' }));
+
+// Protect atelier management endpoints with a deployment-provided high-entropy token.
+const requireAdmin = (req: any, res: any, next: any) => {
+  const expected = process.env.ADMIN_API_TOKEN || '';
+  const header = String(req.headers.authorization || '');
+  const provided = header.startsWith('Bearer ') ? header.slice(7) : '';
+  if (expected.length < 32) return res.status(503).json({ error: 'Admin API authentication is not configured.' });
+  const left = Buffer.from(expected);
+  const right = Buffer.from(provided);
+  if (left.length !== right.length || !timingSafeEqual(left, right)) return res.status(401).json({ error: 'Administrator authorization required.' });
+  return next();
+};
 
 // High quality curated glass imagery
 const GLASS_IMAGES = [
@@ -545,7 +558,7 @@ app.post('/api/inquiries', (req, res) => {
 });
 
 // List Inquiries
-app.get('/api/inquiries', (req, res) => {
+app.get('/api/inquiries', requireAdmin, (req, res) => {
   res.json({
     total: inquiries.length,
     inquiries: inquiries.slice(0, 50)
@@ -553,7 +566,7 @@ app.get('/api/inquiries', (req, res) => {
 });
 
 // Ghost Terminal Command Processor with AI & Local Fallback
-app.post('/api/ghost/execute', async (req, res) => {
+app.post('/api/ghost/execute', requireAdmin, async (req, res) => {
   const { command } = req.body;
   if (!command || typeof command !== 'string') {
     res.status(400).json({ error: 'Command string is required.' });
